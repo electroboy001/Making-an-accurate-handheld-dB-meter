@@ -1,20 +1,28 @@
 # Making-an-accurate-handheld-dB-meter
 A small handheld and very accurate sound meter to measure SNR or noise ambiance, the DB meter.
-The full article can be found on: 
+[View Project on Hackster](https://www.hackster.io/electroboy001/making-an-accurate-handheld-db-meter-70314f)
 
-Because I am a sound lover, and in recent times I have done a lot of research on audio-related products. But I am always curious to measure the sound performance in terms of dB(A). In that way, when the amplifier is in steady state, I can measure the total output noise due to the surroundings. Because decibels are a logarithmic scale, it usually starts from a very light value, and it can also measure very high values. I have many options, as someone on the internet says, there are phone apps that claim to measure sound levels, but let's be honest, a phone microphone is designed for voice calls, not calibrated acoustic measurement.
+Because I am a sound lover, and in recent times I have done a lot of research on audio-related products. But I am always curious to measure the sound performance in terms of dB(A). In that way, when the amplifier is in steady state, I can measure the total output noise due to the surroundings. Because decibels are a logarithmic scale, it usually starts from a very light value, and it can also measure very high values. I have many options, as someone on the internet says, there are phone apps that claim to measure sound levels, but let's be honest, a phone microphone is designed for voice calls, not calibrated acoustic measurement. 
 
-So if you want to measure actual sound output, there are professional sound level meters, but they start at a couple of hundred dollars. But I wanted something in between a handheld dB meter that's actually accurate and battery-friendly. When I was searching the web, I came across the DFRobot Gravity Analog Sound Level Meter (SEN0232). This little board has a professional-grade MEMS microphone with proper signal conditioning. It has an A-weighting filter and a beautifully simple analog output. The voltage coming out is linearly proportional to decibels. So, no complex DSP, no FFT, just read an analog pin and multiply. I paired it with my own designed Arduino from JLCPCB and a 0.96" OLED display, and that’s how I got myself a proper handheld dB meter.
+![Image](https://github.com/user-attachments/assets/d11b1ffc-ad36-4dc3-96e5-7531eda54738)
+
+So if you want to measure actual sound output, there are professional sound level meters, but they start at a couple of hundred dollars. But I wanted something in between a handheld dB meter that's actually accurate and battery-friendly. When I was searching the web, I came across the DFRobot Gravity Analog Sound Level Meter (SEN0232). This little board has a professional-grade MEMS microphone with proper signal conditioning. It has an A-weighting filter and a beautifully simple analog output. The voltage coming out is linearly proportional to decibels. So, no complex DSP, no FFT, just read an analog pin and multiply. I paired it with my [own designed Arduino from JLCPCB JLCPCB](https://jlcpcb.com/?from=audrey3) and a 0.96" OLED display, and that’s how I got myself a proper handheld dB meter.
 
 What is a Sound Level Meter?
 
 Before jumping into the process of building the meter first let’s what actually is dBA and dB. Human ears can hear sounds between 1kHz and 5kHz, and are less sensitive to the other ranges. A-weighting is a frequency response curve that adjusts the measurement to match human perception. Here is the representation over frequency you can see the plots:
 
+![Image](https://github.com/user-attachments/assets/204142bf-50d9-43da-9742-2358efc93e04)
+
 When you see dBA, that's a decibel reading with A-weighting applied. This is important because the SEN0232 uses A-weighting, which means the readings represent how loud something sounds to you, not just the raw acoustic energy. That's exactly what you want for a practical sound level meter. Here is the dBA reference scale:
+
+<img width="759" height="326" alt="Image" src="https://github.com/user-attachments/assets/77afbcae-b7eb-42da-a821-538e87e10e67" />
 
 DFRobot Gravity Analog Sound Level Meter:
 
-The SEN0232 is not just a microphone breakout board, but it's a complete sound level measurement module with an onboard signal conditioning circuit.
+The SEN0232 is not just a microphone breakout board, but it's a complete sound level measurement module with an onboard signal conditioning circuit. [DFRobot Analog Sound Level Meter](https://www.dfrobot.com/product-1663.html?srsltid=AfmBOopiAB0wIjJjKp2_8b-FmOPcTs_SFuejP5NUATcJ6zYNgUqGxCbx)
+
+![Image](https://github.com/user-attachments/assets/04d2fa74-30a4-4482-8a57-e13de4df9125)
 
 Key Specifications:
 
@@ -38,6 +46,8 @@ The board comes with a sensitivity MEMS microphone for capturing sound pressure 
 
 Components Required:
 
+![Image](https://github.com/user-attachments/assets/2d8bd57f-c2b6-4c5b-897f-68b3507d6362)
+
 DFRobot SEN0232 Sound Level Meter
 
 Arduino Nano
@@ -52,6 +62,8 @@ USB Cable
 
 Circuit Connections:
 
+![Image](https://github.com/user-attachments/assets/701d0161-baed-4fe0-b2ba-4955ce101aea)
+
 The wiring is dead simple; that's the beauty of the Gravity interface of this sensor. Just power the sensor with a 5V supply from the Arduino and plug the output wire into the A0 pin of the Arduino. For the OLED connection:
 
 VCC - 5V
@@ -62,11 +74,13 @@ SDA - A4
 
 SCL - A5
 
-I am using the board that I have designed on my own; you can see all the details from here. It is an Arduino-compatible board with the same specs, but with some hardware modifications. I got mine from JLCPCB. You can explore and try making one yourself; files attached.
+I am using the board that I have designed on my own; you can see all the details from here. It is an Arduino-compatible board with the same specs, but with some hardware modifications.  [I got mine from JLCPCB ](https://jlcpcb.com/?from=audrey3) . You can explore and try making one yourself; files attached. [Project Files (Google Drive)](https://drive.google.com/drive/folders/1WUuI7g_LavQaPB_SkB0YFTJq0HnHdQnA)
 
 Arduino Code:
 
 Here's the complete Arduino sketch that reads the sound level and displays it on the OLED with a visual bar graph.
+
+<img width="996" height="601" alt="Image" src="https://github.com/user-attachments/assets/e16b4962-56f5-4355-aeb5-266747c9083f" />
 
 Install these from the Arduino Library Manager:
 
@@ -74,7 +88,10 @@ Install these from the Arduino Library Manager:
 2. Adafruit GFX Library - Graphics primitives (installed automatically with SSD1306)
    
 Go to Sketch > Include Library > Manage Libraries, search for Adafruit SSD1306, and install it. The GFX library will be installed as a dependency.
-Download the main code from this link.
+
+[Download the main code from this link.](https://drive.google.com/drive/folders/1ajFgN2IvcSS-4j3uNcSGjYzBxBIeKg9P)
+
+<img width="838" height="1019" alt="Image" src="https://github.com/user-attachments/assets/0079ad0d-7664-426b-b94e-f01ac8ef4dbe" />
 
 Upload this first and open the Serial Monitor at 115200 baud. You should see readings between 30 and 130 dBA, depending on your environment. A quiet room should read around 35-45 dBA.
 
@@ -98,8 +115,14 @@ I have tested the output in different scenarios, and it is working perfectly. Be
 
 Testing with Songs:
 
+![Image](https://github.com/user-attachments/assets/01175c00-599c-4927-922f-734f29e21078)
+
 Testing during conversation:
 
+![Image](https://github.com/user-attachments/assets/723a8f88-bc61-4d61-85c9-f4ccc5148a6e)
+
 Conclusion:
+
+![Image](https://github.com/user-attachments/assets/cfe18bd8-effe-4466-bed9-43e46bee2a74)
 
 With this standalone handheld unit, we can now make instant readings, which means just power on and read, no booting or launching software.  An OLED display gives you a clear, real-time reading. Now, at least I have added one more measurement unit in my lab. I can assure you that this is the one if you are looking for a low-cost but accurate dBA measurement unit. There are a lot of other applications where this board can be used. I will come with some other applications in the future. Until then, the comment section is free for you.
